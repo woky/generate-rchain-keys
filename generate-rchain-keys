@@ -1,0 +1,30 @@
+#!/usr/bin/env python3
+import argparse
+from rchain.crypto import PrivateKey
+
+argp = argparse.ArgumentParser()
+argp.add_argument('count', type=int)
+argp.add_argument('rhoc_balance', type=int, nargs='?', default=0)
+args = argp.parse_args()
+
+if args.rhoc_balance < 0:
+    raise argparse.ArgumentError('rhoc_balance < 0')
+
+print(
+    'private_key',
+    'public_key',
+    'rev_address',
+    'eth_address',
+    'rhoc_balance',
+    sep=',')
+
+for i in range(0, args.count):
+    sk = PrivateKey.generate()
+    pk = sk.get_public_key()
+    print(
+        sk.to_hex(),
+        pk.to_hex(),
+        pk.get_rev_address(),
+        pk.get_eth_address(),
+        args.rhoc_balance,
+        sep=',')
